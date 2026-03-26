@@ -197,6 +197,9 @@ const IconRenderer = ({ iconName, size = 20, className }: { iconName: string, si
   return <span className={className}>{iconName}</span>;
 };
 
+// Currency context to pass currency to TransactionModal
+const CurrencyContext = React.createContext<Currency>(CURRENCIES[0]);
+
 interface IconPickerModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -513,7 +516,7 @@ const TransactionModal = ({ onClose, onSubmit, categories, initialData }: Transa
     if (!amount || !categoryId) return;
 
     const transaction: Transaction = {
-      id: initialData?.id || Math.random().toString(36).substr(2, 9),
+      id: initialData?.id || crypto.randomUUID(),
       amount: parseFloat(amount),
       description,
       type,
@@ -536,7 +539,7 @@ const TransactionModal = ({ onClose, onSubmit, categories, initialData }: Transa
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/40 backdrop-blur-sm"
       onClick={onClose}
     >
       <motion.div 
@@ -544,9 +547,10 @@ const TransactionModal = ({ onClose, onSubmit, categories, initialData }: Transa
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="w-full max-w-md bg-white rounded-t-[32px] sm:rounded-[32px] p-8 shadow-2xl overflow-hidden"
+        className="w-full max-w-md bg-white rounded-t-[32px] sm:rounded-[32px] shadow-2xl max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
+        <div className="p-6 sm:p-8">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-xl font-bold text-slate-900">
             {initialData ? 'Edit Transaction' : 'New Transaction'}
@@ -585,7 +589,7 @@ const TransactionModal = ({ onClose, onSubmit, categories, initialData }: Transa
             <div>
               <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">Amount</label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">{React.useContext(CurrencyContext).symbol}</span>
                 <input 
                   autoFocus
                   type="number" 
@@ -726,11 +730,12 @@ const TransactionModal = ({ onClose, onSubmit, categories, initialData }: Transa
 
           <button 
             type="submit"
-            className="w-full py-5 bg-slate-900 text-white rounded-2xl font-bold shadow-xl shadow-slate-900/20 hover:bg-slate-800 transition-all active:scale-[0.98]"
+            className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold shadow-xl shadow-slate-900/20 hover:bg-slate-800 transition-all active:scale-[0.98]"
           >
             {initialData ? 'Update Transaction' : 'Save Transaction'}
           </button>
         </form>
+        </div>
       </motion.div>
     </motion.div>
   );
@@ -763,7 +768,7 @@ const CategoryModal = ({
     if (!name) return;
 
     onSubmit({
-      id: initialData?.id || Math.random().toString(36).substr(2, 9),
+      id: initialData?.id || crypto.randomUUID(),
       name,
       type,
       icon,
@@ -778,16 +783,17 @@ const CategoryModal = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/40 backdrop-blur-sm"
       onClick={onClose}
     >
       <motion.div 
         initial={{ y: "100%" }}
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
-        className="w-full max-w-md bg-white rounded-t-[32px] sm:rounded-[32px] p-8 shadow-2xl overflow-hidden"
+        className="w-full max-w-md bg-white rounded-t-[32px] sm:rounded-[32px] shadow-2xl max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
+        <div className="p-6 sm:p-8">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-xl font-bold text-slate-900">
             {initialData ? 'Edit Category' : 'New Category'}
@@ -915,6 +921,7 @@ const CategoryModal = ({
             onClose={() => setIsIconPickerOpen(false)}
           />
         )}
+        </div>
       </motion.div>
     </motion.div>
   );
@@ -1209,7 +1216,7 @@ export default function App() {
           ...c,
           spent,
           effectiveBudget,
-          percent: Math.min((spent / (effectiveBudget || 1)) * 100, 100)
+          percent: (spent / (effectiveBudget || 1)) * 100
         };
       });
   }, [transactions, categories]);
@@ -1263,7 +1270,7 @@ export default function App() {
     storage.saveCurrency(data.currency.code);
 
     const newTransactions: Transaction[] = [];
-    const now = new Date().toISOString();
+    const now = format(new Date(), 'yyyy-MM-dd');
 
     if (data.income > 0) {
       const incomeCat = categories.find(c => c.type === 'income') || DEFAULT_CATEGORIES[0];
@@ -1300,9 +1307,10 @@ export default function App() {
   };
 
   return (
+    <CurrencyContext.Provider value={currency}>
     <div className={cn(
       "min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900 pb-24",
-      theme === 'dark' && "bg-slate-950 text-slate-50"
+      theme === 'dark' && "dark bg-slate-950 text-slate-50"
     )}>
       <AnimatePresence>
         {showOnboarding && (
@@ -1381,7 +1389,7 @@ export default function App() {
                             animate={{ width: `${b.percent}%` }}
                             className={cn(
                               "h-full rounded-full",
-                              b.percent > 90 ? "bg-red-500" : b.percent > 75 ? "bg-amber-500" : "bg-blue-500"
+                              b.percent > 100 ? "bg-red-600" : b.percent > 90 ? "bg-red-500" : b.percent > 75 ? "bg-amber-500" : "bg-blue-500"
                             )}
                           />
                         </div>
@@ -1398,7 +1406,10 @@ export default function App() {
                   <PieChartIcon size={18} className="text-slate-400" />
                 </div>
                 <div className="h-64 w-full">
-                  <SpendingChart transactions={transactions} categories={categories} currency={currency} />
+                  <SpendingChart transactions={transactions.filter(t => {
+                    const now = new Date();
+                    return isWithinInterval(parseISO(t.date), { start: startOfMonth(now), end: endOfMonth(now) });
+                  })} categories={categories} currency={currency} />
                 </div>
               </Card>
 
@@ -1408,7 +1419,7 @@ export default function App() {
                   <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">Recent Activity</h3>
                   <button onClick={() => setActiveTab('list')} className="text-xs text-blue-600 font-semibold">View All</button>
                 </div>
-                {transactions.slice(0, 5).map(t => (
+                {[...transactions].sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime()).slice(0, 5).map(t => (
                   <TransactionItem 
                     key={t.id} 
                     transaction={t} 
@@ -1821,7 +1832,7 @@ export default function App() {
                                   title: 'Delete Category',
                                   message: `Are you sure you want to delete "${category.name}"? Transactions in this category will be moved to "Other".`,
                                   onConfirm: () => {
-                                    const otherCategory = categories.find(c => c.name === 'Other' && c.type === category.type);
+                                    const otherCategory = categories.find(c => (c.name === 'Other Expense' || c.name === 'Other Income' || c.name === 'Other') && c.type === category.type);
                                     if (otherCategory) {
                                       const updatedTransactions = transactions.map(t => 
                                         t.categoryId === category.id ? { ...t, categoryId: otherCategory.id } : t
@@ -2079,6 +2090,7 @@ export default function App() {
         )}
       </AnimatePresence>
     </div>
+    </CurrencyContext.Provider>
   );
 }
 

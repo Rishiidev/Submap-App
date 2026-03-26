@@ -11,7 +11,11 @@ import {
   Check,
   ArrowUpCircle,
   ArrowDownCircle,
-  Sparkles
+  Sparkles,
+  Smartphone,
+  Share,
+  PlusSquare,
+  MoreVertical
 } from 'lucide-react';
 import { Currency, CURRENCIES, DEFAULT_CATEGORIES, Transaction } from '../types';
 import { formatCurrency, cn } from '../lib/utils';
@@ -110,6 +114,59 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
               )}
             </button>
           ))}
+        </div>
+      )
+    },
+    {
+      title: "Install Submap",
+      description: "Add Submap to your home screen for instant access — works like a native app.",
+      content: (
+        <div className="space-y-5 py-4">
+          <div className="p-6 bg-blue-50 rounded-[32px] border border-blue-100 flex flex-col items-center text-center">
+            <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-blue-600 mb-4">
+              <Smartphone size={32} />
+            </div>
+            <h4 className="text-lg font-bold text-blue-900">Works Like an App</h4>
+            <p className="text-sm text-blue-600/80 mt-1">Full screen, no browser bar, instant launch from your home screen.</p>
+          </div>
+
+          <div className="space-y-3">
+            <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">iPhone / iPad</p>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 text-xs font-bold">1</div>
+                  <p className="text-sm text-slate-700">Tap the <span className="inline-flex items-center gap-1 font-bold"><Share size={14} /> Share</span> button in Safari</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 text-xs font-bold">2</div>
+                  <p className="text-sm text-slate-700">Scroll down and tap <span className="inline-flex items-center gap-1 font-bold"><PlusSquare size={14} /> Add to Home Screen</span></p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 text-xs font-bold">3</div>
+                  <p className="text-sm text-slate-700">Tap <span className="font-bold">Add</span> — done!</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Android</p>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 text-xs font-bold">1</div>
+                  <p className="text-sm text-slate-700">Tap the <span className="inline-flex items-center gap-1 font-bold"><MoreVertical size={14} /> Menu</span> button in Chrome</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 text-xs font-bold">2</div>
+                  <p className="text-sm text-slate-700">Tap <span className="font-bold">"Add to Home screen"</span></p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 text-xs font-bold">3</div>
+                  <p className="text-sm text-slate-700">Tap <span className="font-bold">Install</span> — enjoy!</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )
     },
@@ -272,10 +329,10 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
             Back
           </button>
 
-          {(step === 2 || step === 3) && (
+          {(step === 3 || step === 4) && (
             <button
               onClick={() => {
-                if (step === 2) {
+                if (step === 3) {
                   setIncome('');
                   nextStep();
                 } else {
