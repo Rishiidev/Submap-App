@@ -1319,9 +1319,12 @@ export default function App() {
       </AnimatePresence>
       {/* Header */}
       <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-100 px-6 pb-4 pt-[max(1rem,env(safe-area-inset-top))] flex justify-between items-center">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight text-slate-900">Submap</h1>
-          <p className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">Local Finance Tracker</p>
+        <div className="flex items-center gap-3">
+          <img src="/logo.png" alt="Submap Logo" className="w-8 h-8 object-contain" />
+          <div>
+            <h1 className="text-xl font-bold tracking-tight text-slate-900">Submap</h1>
+            <p className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">Local Finance Tracker</p>
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right">
