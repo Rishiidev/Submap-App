@@ -1,0 +1,5 @@
+{
+  "name": "Submap",
+  "description": "A private, manual income and expense tracker for freelancers and individuals. No bank sync, all data stays local.",
+  "requestFramePermissions": []
+}
