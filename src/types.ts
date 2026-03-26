@@ -1,5 +1,20 @@
 export type TransactionType = 'income' | 'expense';
 export type Frequency = 'weekly' | 'monthly' | 'yearly';
+export type Theme = 'light' | 'dark' | 'high-contrast';
+export type CurrencyCode = 'USD' | 'EUR' | 'INR' | 'GBP';
+
+export interface Currency {
+  code: CurrencyCode;
+  symbol: string;
+  label: string;
+}
+
+export const CURRENCIES: Currency[] = [
+  { code: 'USD', symbol: '$', label: 'US Dollar' },
+  { code: 'EUR', symbol: '€', label: 'Euro' },
+  { code: 'INR', symbol: '₹', label: 'Indian Rupee' },
+  { code: 'GBP', symbol: '£', label: 'British Pound' },
+];
 
 export interface Transaction {
   id: string;
@@ -12,7 +27,17 @@ export interface Transaction {
   frequency?: Frequency;
   lastGeneratedDate?: string; // For recurring transactions
   parentId?: string; // If generated from a recurring transaction
+  notes?: string;
+  tags?: string[];
+  recurringEditMode?: 'this' | 'future'; // Temporary field for modal
 }
+
+export const AVAILABLE_ICONS = [
+  'Briefcase', 'Laptop', 'TrendingUp', 'Plus', 'Home', 'ShoppingCart', 'Zap', 
+  'Film', 'Car', 'Heart', 'MoreHorizontal', 'Coffee', 'Utensils', 'Gift', 
+  'Smartphone', 'Plane', 'Music', 'Book', 'Gamepad', 'Dumbbell', 'Scissors',
+  'Camera', 'Brush', 'Globe', 'Shield', 'Key', 'Lock', 'User', 'Users', 'Mail'
+];
 
 export interface Category {
   id: string;
@@ -21,6 +46,7 @@ export interface Category {
   color: string;
   type: TransactionType;
   budget?: number; // Monthly budget for expense categories
+  rolloverEnabled?: boolean;
 }
 
 export const DEFAULT_CATEGORIES: Category[] = [

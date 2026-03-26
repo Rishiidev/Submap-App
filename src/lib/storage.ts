@@ -3,6 +3,7 @@ import { addWeeks, addMonths, addYears, isBefore, parseISO, formatISO } from 'da
 
 const STORAGE_KEY = 'submap_transactions';
 const CATEGORIES_KEY = 'submap_categories';
+const CURRENCY_KEY = 'submap_currency';
 
 export const storage = {
   getTransactions: (): Transaction[] => {
@@ -19,6 +20,18 @@ export const storage = {
   saveCategories: (categories: Category[]) => {
     localStorage.setItem(CATEGORIES_KEY, JSON.stringify(categories));
   },
+  getCurrency: (): string => {
+    return localStorage.getItem(CURRENCY_KEY) || 'USD';
+  },
+  saveCurrency: (currency: string) => {
+    localStorage.setItem(CURRENCY_KEY, currency);
+  },
+  getOnboardingStatus: (): boolean => {
+    return localStorage.getItem('submap_onboarding_complete') === 'true';
+  },
+  setOnboardingStatus: (status: boolean) => {
+    localStorage.setItem('submap_onboarding_complete', status ? 'true' : 'false');
+  },
   
   processRecurring: (transactions: Transaction[]): Transaction[] => {
     const now = new Date();
@@ -30,6 +43,7 @@ export const storage = {
       if (t.isRecurring && t.frequency) {
         let lastDate = parseISO(t.lastGeneratedDate || t.date);
         let nextDate = lastDate;
+        let itemChanged = false;
 
         const getNextDate = (date: Date, freq: Frequency) => {
           if (freq === 'weekly') return addWeeks(date, 1);
@@ -52,10 +66,11 @@ export const storage = {
           newTransactions.push(newT);
           lastDate = nextDate;
           nextDate = getNextDate(lastDate, t.frequency);
+          itemChanged = true;
           changed = true;
         }
 
-        if (changed) {
+        if (itemChanged) {
           updatedTransactions[index] = {
             ...t,
             lastGeneratedDate: formatISO(lastDate)
