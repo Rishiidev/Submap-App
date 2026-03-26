@@ -29,7 +29,9 @@ import {
   BarChart2,
   Tags,
   RefreshCw,
-  Globe
+  Globe,
+  DollarSign,
+  ChevronDown
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -1865,6 +1867,44 @@ export default function App() {
                     <Plus size={18} />
                     Add Custom Category
                   </button>
+                </div>
+              </div>
+
+              <div className="space-y-4 mb-8">
+                <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">Preferences</h3>
+                
+                <div className="space-y-3">
+                  <div className="w-full flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                        <DollarSign size={20} />
+                      </div>
+                      <div className="text-left">
+                        <p className="text-sm font-bold">Currency</p>
+                        <p className="text-[10px] text-slate-400 uppercase tracking-wider">Display format</p>
+                      </div>
+                    </div>
+                    <div className="relative">
+                      <select
+                        value={currency.code}
+                        onChange={(e) => {
+                          const selected = CURRENCIES.find(c => c.code === e.target.value);
+                          if (selected) {
+                            setCurrency(selected);
+                            storage.saveCurrency(selected.code);
+                          }
+                        }}
+                        className="appearance-none bg-slate-50 border border-slate-200 text-slate-700 text-sm font-bold rounded-xl pl-4 pr-10 py-2 outline-none focus:border-blue-500 transition-colors"
+                      >
+                        {CURRENCIES.map(c => (
+                          <option key={c.code} value={c.code}>
+                            {c.code} ({c.symbol})
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                    </div>
+                  </div>
                 </div>
               </div>
 
