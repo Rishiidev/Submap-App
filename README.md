@@ -1,6 +1,5 @@
 # Submap
 
-![Submap Cover](public/icons/icon-512.png)
 
 **Submap** is a privacy-first, offline-capable Progressive Web App (PWA) designed to give you a clear, comprehensive view of your finances. Originally conceived as a minimal finance tracker, it has evolved into a robust tool to manage expenses, track income, and monitor subscription costs—all from your browser or mobile home screen.
 
