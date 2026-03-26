@@ -1318,7 +1318,7 @@ export default function App() {
         )}
       </AnimatePresence>
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-100 px-6 py-4 flex justify-between items-center">
+      <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-100 px-6 pb-4 pt-[max(1rem,env(safe-area-inset-top))] flex justify-between items-center">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-slate-900">Submap</h1>
           <p className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">Local Finance Tracker</p>
@@ -2013,7 +2013,7 @@ export default function App() {
       </main>
 
       {/* FAB */}
-      <div className="fixed bottom-24 right-6 z-20">
+      <div className="fixed right-6 z-20 bottom-[calc(6rem+env(safe-area-inset-bottom))]">
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -2025,7 +2025,7 @@ export default function App() {
       </div>
 
       {/* Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-100 px-8 py-4 flex justify-between items-center z-10">
+      <nav className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-100 px-8 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] flex justify-between items-center z-10">
         <IconButton 
           icon={LayoutDashboard} 
           label="Home" 
