@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
 @layer base {
+  button, a, input, select, textarea {
+    touch-action: manipulation;
+  }
+
   /* Dark Mode */
   .dark {
     color-scheme: dark;
