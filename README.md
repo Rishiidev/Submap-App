@@ -2,6 +2,8 @@
 
 <div align="center">
 
+![Submap](assets/social-preview.svg)
+
 **Track every dollar you earn and spend — without sending a single byte to the cloud.**
 
 [![Stars](https://img.shields.io/github/stars/Rishiidev/Submap-App?style=for-the-badge&color=gold)](https://github.com/Rishiidev/Submap-App/stargazers)
