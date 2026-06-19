@@ -971,6 +971,9 @@ export default function App() {
     title: string;
     message: string;
     onConfirm: () => void;
+    onCancel?: () => void;
+    confirmLabel?: string;
+    cancelLabel?: string;
     variant?: 'danger' | 'info';
   }>({
     isOpen: false,
@@ -2105,8 +2108,10 @@ export default function App() {
         isOpen={confirmModal.isOpen}
         title={confirmModal.title}
         message={confirmModal.message}
+        confirmLabel={confirmModal.confirmLabel}
+        cancelLabel={confirmModal.cancelLabel}
         onConfirm={confirmModal.onConfirm}
-        onCancel={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
+        onCancel={confirmModal.onCancel ?? (() => setConfirmModal(prev => ({ ...prev, isOpen: false })))}
         variant={confirmModal.variant}
       />
 
