@@ -1,0 +1,46 @@
+name: Feature Request
+description: Suggest a new feature or improvement for Submap
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping make Submap better! All data stays local — please keep that in mind when suggesting features.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the financial tracking problem or workflow gap.
+      placeholder: "I find it hard to track..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution
+      description: What would the feature look like? How would you use it?
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Expense/Income tracking
+        - Budgets and categories
+        - Analytics and charts
+        - PWA / offline behavior
+        - Multi-currency
+        - Import/export
+        - UI / dark mode
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: This feature keeps all data local (no cloud sync required)
+          required: false
